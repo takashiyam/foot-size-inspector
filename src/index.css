@@ -1204,22 +1204,234 @@ h4 {
   line-height: 1.5;
 }
 
-/* --- Guide Page --- */
-.guide-page {
+/* --- Guide Walkthrough --- */
+.guide-walkthrough {
   flex: 1;
-  padding: var(--space-base);
-  padding-bottom: calc(var(--space-xl) + var(--bottom-safe));
+  display: flex;
+  flex-direction: column;
+  min-height: 100svh;
+  background: var(--color-bg);
   animation: pageEnter var(--transition-slow) ease;
 }
 
-.guide-header {
+.guide-wt-header {
   display: flex;
   align-items: center;
   gap: var(--space-md);
-  margin-bottom: var(--space-xl);
+  padding: var(--space-base);
+  padding-top: calc(var(--space-base) + var(--top-safe));
 }
 
-.guide-back-button,
+.guide-wt-close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--tap-min);
+  height: var(--tap-min);
+  border: none;
+  background: var(--color-bg-tertiary);
+  border-radius: 50%;
+  font-size: var(--text-lg);
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.guide-wt-close:active {
+  background: var(--color-border);
+}
+
+.guide-wt-progress {
+  flex: 1;
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.guide-wt-progress-dot {
+  flex: 1;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--color-border);
+  transition: background var(--transition-base);
+}
+
+.guide-wt-progress-dot--active {
+  background: var(--color-primary);
+  height: 6px;
+  border-radius: 3px;
+}
+
+.guide-wt-progress-dot--done {
+  background: var(--color-primary-light);
+}
+
+.guide-wt-step-count {
+  font-size: var(--text-sm);
+  color: var(--color-text-tertiary);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  flex-shrink: 0;
+  min-width: 36px;
+  text-align: right;
+}
+
+.guide-wt-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-xl) var(--space-2xl);
+  text-align: center;
+  animation: guideFadeIn 0.3s ease;
+}
+
+@keyframes guideFadeIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.guide-wt-illustration {
+  font-size: 80px;
+  margin-bottom: var(--space-2xl);
+  line-height: 1;
+}
+
+.guide-wt-title {
+  font-size: var(--text-2xl);
+  font-weight: 800;
+  color: var(--color-text);
+  margin-bottom: var(--space-md);
+}
+
+.guide-wt-description {
+  font-size: var(--text-base);
+  color: var(--color-text-secondary);
+  line-height: 1.7;
+  max-width: 320px;
+}
+
+.guide-wt-tip {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-sm);
+  margin-top: var(--space-xl);
+  padding: var(--space-md) var(--space-base);
+  background: var(--color-success-bg);
+  border-radius: var(--radius-md);
+  font-size: var(--text-sm);
+  color: var(--color-success);
+  text-align: left;
+  max-width: 320px;
+  width: 100%;
+  line-height: 1.5;
+}
+
+.guide-wt-tip-icon,
+.guide-wt-bad-icon {
+  flex-shrink: 0;
+  font-size: var(--text-base);
+}
+
+.guide-wt-bad {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-sm);
+  margin-top: var(--space-sm);
+  padding: var(--space-md) var(--space-base);
+  background: var(--color-warning-bg);
+  border-radius: var(--radius-md);
+  font-size: var(--text-sm);
+  color: var(--color-warning);
+  text-align: left;
+  max-width: 320px;
+  width: 100%;
+  line-height: 1.5;
+}
+
+.guide-wt-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-base);
+  padding-bottom: calc(var(--space-xl) + var(--bottom-safe));
+  gap: var(--space-md);
+}
+
+.guide-wt-nav-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: var(--tap-min);
+  padding: var(--space-md) var(--space-xl);
+  border: none;
+  border-radius: var(--radius-md);
+  font-size: var(--text-md);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.guide-wt-nav-btn:active {
+  transform: scale(0.97);
+}
+
+.guide-wt-nav-btn--prev {
+  background: var(--color-bg-tertiary);
+  color: var(--color-text-secondary);
+}
+
+.guide-wt-nav-btn--next {
+  background: var(--color-primary);
+  color: var(--color-text-inverse);
+  flex: 1;
+  max-width: 200px;
+  margin-left: auto;
+  border-radius: var(--radius-lg);
+  min-height: 52px;
+  font-size: var(--text-lg);
+}
+
+.guide-wt-nav-btn--next:active {
+  background: var(--color-primary-dark);
+}
+
+.guide-wt-final-actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  flex: 1;
+}
+
+.guide-wt-nav-btn--start {
+  background: var(--color-primary);
+  color: var(--color-text-inverse);
+  width: 100%;
+  border-radius: var(--radius-lg);
+  min-height: 52px;
+  font-size: var(--text-lg);
+  gap: var(--space-sm);
+}
+
+.guide-wt-nav-btn--start:active {
+  background: var(--color-primary-dark);
+}
+
+.guide-wt-nav-btn--start-alt {
+  background: var(--color-primary-bg);
+  color: var(--color-primary);
+  width: 100%;
+  border-radius: var(--radius-lg);
+  min-height: var(--tap-min);
+  gap: var(--space-sm);
+}
+
+.guide-wt-nav-btn--start-alt:active {
+  background: var(--color-primary-bg-hover);
+}
+
+/* Back buttons shared */
 .history-back-button,
 .measurement-back-button {
   display: flex;
@@ -1236,121 +1448,14 @@ h4 {
   flex-shrink: 0;
 }
 
-.guide-back-button:active,
 .history-back-button:active,
 .measurement-back-button:active {
   background: var(--color-primary-bg);
 }
 
-.guide-title,
 .history-heading {
   font-size: var(--text-xl);
   font-weight: 700;
-}
-
-.guide-section-title {
-  font-size: var(--text-lg);
-  font-weight: 700;
-  margin-bottom: var(--space-base);
-  color: var(--color-text);
-}
-
-.guide-steps {
-  margin-bottom: var(--space-2xl);
-}
-
-.guide-step-list {
-  display: flex;
-  flex-direction: column;
-  gap: 0;
-}
-
-.guide-step-item {
-  display: flex;
-  gap: var(--space-base);
-  padding: var(--space-base) 0;
-  border-bottom: 1px solid var(--color-border-light);
-}
-
-.guide-step-item:last-child {
-  border-bottom: none;
-}
-
-.guide-step-number {
-  width: 32px;
-  height: 32px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  background: var(--color-primary);
-  color: var(--color-text-inverse);
-  font-size: var(--text-sm);
-  font-weight: 700;
-  flex-shrink: 0;
-}
-
-.guide-step-content {
-  flex: 1;
-  padding-top: var(--space-xs);
-}
-
-.guide-step-text {
-  font-size: var(--text-base);
-  font-weight: 500;
-  color: var(--color-text);
-}
-
-.guide-step-detail {
-  font-size: var(--text-sm);
-  color: var(--color-text-secondary);
-  margin-top: var(--space-xs);
-}
-
-.guide-tips {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-base);
-}
-
-.guide-tips-good,
-.guide-tips-bad {
-  padding: var(--space-base);
-  border-radius: var(--radius-md);
-}
-
-.guide-tips-good {
-  background: var(--color-success-bg);
-}
-
-.guide-tips-bad {
-  background: var(--color-danger-bg);
-}
-
-.guide-tips-heading {
-  font-size: var(--text-base);
-  font-weight: 600;
-  margin-bottom: var(--space-sm);
-}
-
-.guide-tips-heading-good {
-  color: var(--color-success);
-}
-
-.guide-tips-heading-bad {
-  color: var(--color-danger);
-}
-
-.guide-tips-list {
-  padding-left: var(--space-lg);
-  list-style: disc;
-}
-
-.guide-tips-list li {
-  font-size: var(--text-sm);
-  color: var(--color-text);
-  padding: var(--space-xs) 0;
-  line-height: 1.5;
 }
 
 /* --- Measurement Page --- */

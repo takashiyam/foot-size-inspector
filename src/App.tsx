@@ -67,7 +67,7 @@ function App() {
       {page === 'home' && (
         <HomePage onNavigate={navigate} onImageSelected={handleImageSelected} />
       )}
-      {page === 'guide' && <GuidePage onNavigate={navigate} />}
+      {page === 'guide' && <GuidePage onNavigate={navigate} onImageSelected={handleImageSelected} />}
       {page === 'measure' && (
         <MeasurementPage
           imageFile={imageFile}

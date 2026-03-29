@@ -1,97 +1,180 @@
-import React from "react";
+import React, { useState } from "react";
 
 interface GuidePageProps {
   onNavigate: (page: string) => void;
+  onImageSelected?: (file: File) => void;
 }
 
-const steps = [
+interface GuideStep {
+  title: string;
+  description: string;
+  illustration: string;
+  tip?: string;
+  bad?: string;
+}
+
+const steps: GuideStep[] = [
   {
-    number: 1,
-    text: "白い紙の上に足を置く",
+    title: "白い紙を敷く",
+    description:
+      "床に白い紙（A3以上が理想）を敷いてください。コントラストがはっきりし、足の輪郭が見えやすくなります。",
+    illustration: "📄",
+    tip: "無地の白い紙がベストです",
   },
   {
-    number: 2,
-    text: "定規を足の横にまっすぐ置く",
-    detail: "目盛りがはっきり見えるもの",
+    title: "足を紙の上に置く",
+    description:
+      "靴下を脱ぎ、片足を紙の上にまっすぐ置いてください。体重をかけて自然に立った状態がベストです。",
+    illustration: "🦶",
+    tip: "体重をしっかりかけてください",
   },
   {
-    number: 3,
-    text: "できるだけ真上から撮影する",
+    title: "定規を足の横に置く",
+    description:
+      "目盛りがはっきり見える定規を、足の横にまっすぐ置いてください。かかとの高さに0cmが来るように合わせます。",
+    illustration: "📏",
+    tip: "30cm定規がおすすめです",
+    bad: "定規が曲がっていると正確に測れません",
   },
   {
-    number: 4,
-    text: "かかとから最長のつま先までが見えるようにする",
+    title: "真上から撮影する",
+    description:
+      "スマホをできるだけ真上に構え、足全体と定規が画面に収まるように撮影してください。",
+    illustration: "📱",
+    tip: "腕をまっすぐ伸ばして真上から",
+    bad: "斜めからの撮影は誤差が大きくなります",
   },
   {
-    number: 5,
-    text: "片足ずつ撮影",
-    detail: "初期版は片足測定が基本",
+    title: "全体が写っているか確認",
+    description:
+      "かかとから最長のつま先まで、足全体と定規の目盛りがしっかり写っていることを確認してください。",
+    illustration: "✅",
+    tip: "暗すぎる場合は明るい場所で撮り直してください",
+    bad: "足先やかかとが切れていると測定できません",
   },
 ];
 
-const badExamples = [
-  "斜めから撮影",
-  "暗い場所",
-  "影が強い",
-  "定規が曲がっている",
-];
+const GuidePage: React.FC<GuidePageProps> = ({ onNavigate, onImageSelected }) => {
+  const [currentStep, setCurrentStep] = useState(0);
+  const isFirst = currentStep === 0;
+  const isLast = currentStep === steps.length - 1;
+  const step = steps[currentStep];
+  const cameraInputRef = React.useRef<HTMLInputElement>(null);
+  const galleryInputRef = React.useRef<HTMLInputElement>(null);
 
-const GuidePage: React.FC<GuidePageProps> = ({ onNavigate }) => {
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file && onImageSelected) {
+      onImageSelected(file);
+    }
+    e.target.value = "";
+  };
+
   return (
-    <div className="guide-page">
-      <header className="guide-header">
+    <div className="guide-walkthrough">
+      {/* Header */}
+      <header className="guide-wt-header">
         <button
-          className="guide-back-button"
+          className="guide-wt-close"
           onClick={() => onNavigate("home")}
         >
-          ← 戻る
+          ✕
         </button>
-        <h1 className="guide-title">使い方ガイド</h1>
+        {/* Progress bar */}
+        <div className="guide-wt-progress">
+          {steps.map((_, i) => (
+            <div
+              key={i}
+              className={`guide-wt-progress-dot ${
+                i === currentStep
+                  ? "guide-wt-progress-dot--active"
+                  : i < currentStep
+                    ? "guide-wt-progress-dot--done"
+                    : ""
+              }`}
+            />
+          ))}
+        </div>
+        <div className="guide-wt-step-count">
+          {currentStep + 1} / {steps.length}
+        </div>
       </header>
 
-      <section className="guide-steps">
-        <h2 className="guide-section-title">撮影の手順</h2>
-        <ol className="guide-step-list">
-          {steps.map((step) => (
-            <li key={step.number} className="guide-step-item">
-              <span className="guide-step-number">{step.number}</span>
-              <div className="guide-step-content">
-                <p className="guide-step-text">{step.text}</p>
-                {step.detail && (
-                  <p className="guide-step-detail">（{step.detail}）</p>
-                )}
-              </div>
-            </li>
-          ))}
-        </ol>
-      </section>
+      {/* Step content */}
+      <div className="guide-wt-content" key={currentStep}>
+        <div className="guide-wt-illustration">{step.illustration}</div>
+        <h2 className="guide-wt-title">{step.title}</h2>
+        <p className="guide-wt-description">{step.description}</p>
 
-      <section className="guide-tips">
-        <h2 className="guide-section-title">撮影のコツ</h2>
+        {step.tip && (
+          <div className="guide-wt-tip">
+            <span className="guide-wt-tip-icon">💡</span>
+            <span>{step.tip}</span>
+          </div>
+        )}
 
-        <div className="guide-tips-good">
-          <h3 className="guide-tips-heading guide-tips-heading-good">
-            ✅ 良い例
-          </h3>
-          <ul className="guide-tips-list">
-            <li>明るい場所で撮影する</li>
-            <li>定規がまっすぐ置かれている</li>
-            <li>真上から撮影している</li>
-            <li>足全体が写っている</li>
-          </ul>
-        </div>
+        {step.bad && (
+          <div className="guide-wt-bad">
+            <span className="guide-wt-bad-icon">⚠️</span>
+            <span>{step.bad}</span>
+          </div>
+        )}
+      </div>
 
-        <div className="guide-tips-bad">
-          <h3 className="guide-tips-heading guide-tips-heading-bad">
-            ❌ 悪い例
-          </h3>
-          <ul className="guide-tips-list">
-            {badExamples.map((example, index) => (
-              <li key={index}>{example}</li>
-            ))}
-          </ul>
-        </div>
-      </section>
+      {/* Navigation */}
+      <div className="guide-wt-nav">
+        {!isFirst ? (
+          <button
+            className="guide-wt-nav-btn guide-wt-nav-btn--prev"
+            onClick={() => setCurrentStep((s) => s - 1)}
+          >
+            ← 前へ
+          </button>
+        ) : (
+          <div />
+        )}
+
+        {!isLast ? (
+          <button
+            className="guide-wt-nav-btn guide-wt-nav-btn--next"
+            onClick={() => setCurrentStep((s) => s + 1)}
+          >
+            次へ →
+          </button>
+        ) : (
+          <div className="guide-wt-final-actions">
+            <button
+              className="guide-wt-nav-btn guide-wt-nav-btn--start"
+              onClick={() => cameraInputRef.current?.click()}
+            >
+              📷 撮影する
+            </button>
+            <button
+              className="guide-wt-nav-btn guide-wt-nav-btn--start-alt"
+              onClick={() => galleryInputRef.current?.click()}
+            >
+              🖼 写真を選ぶ
+            </button>
+          </div>
+        )}
+      </div>
+
+      {/* Hidden file inputs */}
+      <input
+        ref={cameraInputRef}
+        type="file"
+        accept="image/*"
+        capture="environment"
+        className="home-hidden-input"
+        onChange={handleFileChange}
+      />
+      <input
+        ref={galleryInputRef}
+        type="file"
+        accept="image/*"
+        className="home-hidden-input"
+        onChange={handleFileChange}
+      />
     </div>
   );
 };
