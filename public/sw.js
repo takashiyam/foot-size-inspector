@@ -1,8 +1,9 @@
-const CACHE_NAME = 'footsizer-v1';
+const CACHE_NAME = 'footsizer-v2';
+const BASE_PATH = self.registration.scope;
 const STATIC_ASSETS = [
-  '/',
-  '/index.html',
-  '/manifest.json',
+  BASE_PATH,
+  BASE_PATH + 'index.html',
+  BASE_PATH + 'manifest.json',
 ];
 
 // インストール時に静的アセットをキャッシュ
@@ -38,7 +39,7 @@ self.addEventListener('fetch', (event) => {
           caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
           return response;
         })
-        .catch(() => caches.match('/index.html'))
+        .catch(() => caches.match(BASE_PATH + 'index.html'))
     );
     return;
   }
