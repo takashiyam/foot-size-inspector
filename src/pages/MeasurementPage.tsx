@@ -65,8 +65,8 @@ const MeasurementPage: React.FC<MeasurementPageProps> = ({
   const imgRef = useRef<HTMLImageElement | null>(null);
 
   const [canvasSize, setCanvasSize] = useState({ width: 0, height: 0 });
-  const [imageScale, setImageScale] = useState(1);
-  const [displayScale, setDisplayScale] = useState(1);
+  const [, setImageScale] = useState(1);
+  const [, setDisplayScale] = useState(1);
 
   const [currentStep, setCurrentStep] = useState<PlacementStep>(1);
   const [points, setPoints] = useState<Partial<Record<PointKey, Point>>>({});

@@ -4,8 +4,4 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   base: '/foot-size-inspector/',
   plugins: [react()],
-  test: {
-    environment: 'jsdom',
-    globals: true,
-  },
 })
