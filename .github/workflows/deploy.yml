@@ -20,7 +20,7 @@ jobs:
         with:
           node-version: 20
           cache: 'npm'
-      - run: npm ci
+      - run: npm ci --legacy-peer-deps
       - run: npm run build
       - name: Deploy to gh-pages branch
         uses: peaceiris/actions-gh-pages@v4
